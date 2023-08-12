@@ -1,0 +1,145 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Proficiency {
+  Beginner
+  Fluent
+  Intermediate
+}
+
+model User {
+  id             String      @id @default(uuid())
+  email          String?     @unique
+  name           String?
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  address        String?
+  dob            DateTime?
+  description    String?
+  whatsapp       String?
+  linkedin       String?
+  works          Work[]      @relation("UserToWork")
+  projects       Project[]   @relation("UserToProject")
+  roles          Role[]      @relation("UserToRole")
+  skills         Skill[]     @relation("UserToSkill")
+  educations     Education[] @relation("UserToEducation")
+  accounts       Account[]   @relation("UserToAccount")
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String  @unique
+  user              User    @relation("UserToAccount", fields: [userId], references: [id])
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Work {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation("UserToWork", fields: [userId], references: [id])
+  roleId      String
+  role        Role      @relation("RoleToWork", fields: [roleId], references: [id])
+  company     String
+  fromDate    DateTime
+  toDate      DateTime?
+  description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([roleId])
+}
+
+model Project {
+  id          String           @id @default(uuid())
+  userId      String
+  user        User             @relation("UserToProject", fields: [userId], references: [id])
+  roleId      String
+  role        Role             @relation("RoleToProject", fields: [roleId], references: [id])
+  label       String
+  company     String
+  workDate    DateTime
+  description String
+  imageUrl    String
+  linkUrl     String
+  videoUrl    String?
+  skills      SkillToProject[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([userId])
+  @@index([roleId])
+}
+
+model Role {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation("UserToRole", fields: [userId], references: [id])
+  works     Work[]    @relation("RoleToWork")
+  projects  Project[] @relation("RoleToProject")
+  label     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model Skill {
+  id          String           @id @default(uuid())
+  userId      String
+  user        User             @relation("UserToSkill", fields: [userId], references: [id])
+  label       String
+  proficiency Proficiency      @default(Beginner)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  projects    SkillToProject[]
+
+  @@index([userId])
+}
+
+model Education {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation("UserToEducation", fields: [userId], references: [id])
+  label     String
+  study     String
+  fromDate  DateTime
+  toDate    DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model SkillToProject {
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+  skillId   String
+  skill     Skill   @relation(fields: [skillId], references: [id])
+
+  @@id([projectId, skillId])
+}
