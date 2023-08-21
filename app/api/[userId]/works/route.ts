@@ -62,7 +62,7 @@ export async function GET(
 
       const works = await prismadb.work.findMany({
         where: {
-          userId,        
+          userId,
         },
         include :{
           role: true,
