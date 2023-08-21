@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -23,6 +24,7 @@ import { Heading } from "@/components/ui/heading";
 import { useToast } from "@/components/ui/use-toast";
 import { Separator } from "@/components/ui/separator";
 import { AlertModal } from "@/components/modal/alert-modal";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface RoleFormProps {
   initialData: Role | null;
@@ -31,6 +33,7 @@ interface RoleFormProps {
 
 const formSchema = z.object({
   label: z.string().min(1),
+  isFeatured: z.boolean().default(false).optional(),
 });
 
 type RoleFormValues = z.infer<typeof formSchema>;
@@ -52,6 +55,7 @@ export const RoleForm: React.FC<RoleFormProps> = ({ initialData, userId }) => {
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
       label: "",
+      isFeatured: false,
     },
   });
 
@@ -148,6 +152,27 @@ export const RoleForm: React.FC<RoleFormProps> = ({ initialData, userId }) => {
                     />
                   </FormControl>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isFeatured"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      // @ts-ignore
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>Featured</FormLabel>
+                    <FormDescription>
+                      This role will apear on the home page
+                    </FormDescription>
+                  </div>
                 </FormItem>
               )}
             />

@@ -33,7 +33,7 @@ export async function PATCH(
     const currentUser = await getCurrentUser()
     const body = await req.json();
 
-    const {label, proficiency} = body;
+    const {label, proficiency, imageUrl} = body;
     const {skillId} = params;
 
     if (!currentUser) {
@@ -59,7 +59,8 @@ export async function PATCH(
       },
       data: {
         label,
-        proficiency
+        proficiency,
+        imageUrl
       }
     });
 

@@ -33,7 +33,7 @@ export async function PATCH(
     const currentUser = await getCurrentUser()
     const body = await req.json();
 
-    const {label} = body;
+    const {label, isFeatured} = body;
     const {roleId} = params;
 
     if (!currentUser) {
@@ -52,9 +52,11 @@ export async function PATCH(
       where: {
         id: roleId,
         userId: currentUser.id
+        
       },
       data: {
-        label
+        label,
+        isFeatured
       }
     });
 

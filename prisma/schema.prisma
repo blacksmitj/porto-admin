@@ -30,6 +30,7 @@ model User {
   description    String?
   whatsapp       String?
   linkedin       String?
+  biodata        String?
   works          Work[]      @relation("UserToWork")
   projects       Project[]   @relation("UserToProject")
   roles          Role[]      @relation("UserToRole")
@@ -87,6 +88,7 @@ model Project {
   imageUrl    String
   linkUrl     String
   videoUrl    String?
+  isFeatured  Boolean          @default(false)
   skills      SkillToProject[]
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
@@ -96,14 +98,15 @@ model Project {
 }
 
 model Role {
-  id        String    @id @default(uuid())
-  userId    String
-  user      User      @relation("UserToRole", fields: [userId], references: [id])
-  works     Work[]    @relation("RoleToWork")
-  projects  Project[] @relation("RoleToProject")
-  label     String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id         String    @id @default(uuid())
+  userId     String
+  isFeatured Boolean   @default(false)
+  user       User      @relation("UserToRole", fields: [userId], references: [id])
+  works      Work[]    @relation("RoleToWork")
+  projects   Project[] @relation("RoleToProject")
+  label      String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 
   @@index([userId])
 }
@@ -113,6 +116,7 @@ model Skill {
   userId      String
   user        User             @relation("UserToSkill", fields: [userId], references: [id])
   label       String
+  imageUrl    String?
   proficiency Proficiency      @default(Beginner)
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt

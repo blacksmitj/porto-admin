@@ -36,6 +36,7 @@ export async function PATCH(
       linkedin,
       whatsapp,
       image,
+      biodata,
       description
     } = body;
 
@@ -66,6 +67,7 @@ export async function PATCH(
         linkedin,
         whatsapp,
         image,
+        biodata,
         description
       }
     });

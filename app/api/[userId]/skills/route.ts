@@ -9,7 +9,7 @@ export async function POST(
       const currentUser = await getCurrentUser();
       const body = await req.json();
 
-      const {label, proficiency} = body;
+      const {label, proficiency, imageUrl} = body;
 
       if (!currentUser) {
         return new NextResponse('Unauthenticated', {status: 401})
@@ -27,6 +27,7 @@ export async function POST(
         data: {
           label,
           proficiency,
+          imageUrl,
           userId: currentUser.id,
         }
       })

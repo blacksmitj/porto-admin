@@ -30,6 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ImageUpload } from "@/components/ui/image-upload";
 
 interface SkillFormProps {
   initialData: Skill | null;
@@ -38,6 +39,7 @@ interface SkillFormProps {
 
 const formSchema = z.object({
   label: z.string().min(1),
+  imageUrl: z.string().nullable(),
   proficiency: z.string(),
 });
 
@@ -147,6 +149,24 @@ export const SkillForm: React.FC<SkillFormProps> = ({
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full"
         >
+          <FormField
+            control={form.control}
+            name="imageUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Skill Image</FormLabel>
+                <FormControl>
+                  <ImageUpload
+                    value={field.value || ""}
+                    disabled={isLoading}
+                    onChange={(url) => field.onChange(url)}
+                    onRemove={() => field.onChange("")}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <div className="grid grid-cols-3 gap-8">
             <FormField
               control={form.control}

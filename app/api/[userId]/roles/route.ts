@@ -9,7 +9,7 @@ export async function POST(
       const currentUser = await getCurrentUser();
       const body = await req.json();
 
-      const {label} = body;
+      const {label, isFeatured} = body;
 
       if (!currentUser) {
         return new NextResponse('Unauthenticated', {status: 401})
@@ -19,11 +19,10 @@ export async function POST(
         return new NextResponse('Label is required', {status: 400})
       }
 
-      
-
       const role = await prismadb.role.create({
         data: {
           label,
+          isFeatured,
           userId: currentUser.id,
         }
       })
@@ -41,6 +40,8 @@ export async function GET(
   ) {
     try {
       const {userId} = params;
+      const { searchParams } = new URL(req.url);
+      const isFeatured = searchParams.get("isFeatured");
 
       if (!userId) {
         return new NextResponse('User Id is required', {status: 400})
@@ -49,6 +50,7 @@ export async function GET(
       const roles = await prismadb.role.findMany({
         where: {
           userId,        
+          isFeatured: isFeatured ? true: undefined,
         }
       })
 

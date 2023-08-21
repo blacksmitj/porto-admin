@@ -7,6 +7,7 @@ export type RolesColumn = {
   id: string;
   userId: string;
   label: string;
+  isFeatured: string;
   createdAt: string;
 };
 
@@ -14,6 +15,10 @@ export const columns: ColumnDef<RolesColumn>[] = [
   {
     accessorKey: "label",
     header: "Label",
+  },
+  {
+    accessorKey: "isFeatured",
+    header: "Featured",
   },
   {
     accessorKey: "createdAt",

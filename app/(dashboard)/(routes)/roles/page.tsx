@@ -26,6 +26,7 @@ const RolesPage = async () => {
     id: item.id,
     userId: item.userId,
     label: item.label,
+    isFeatured: item.isFeatured.toString(),
     createdAt: format(item.createdAt, "MMM do, yyyy"),
   }));
 

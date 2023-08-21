@@ -38,6 +38,7 @@ const formSchema = z.object({
   address: z.string().min(3).nullable(),
   whatsapp: z.string().min(3).nullable(),
   linkedin: z.string().min(3).nullable(),
+  biodata: z.string().min(10).nullable(),
   description: z.string().min(10).nullable(),
   image: z.string().nullable(),
 });
@@ -203,6 +204,24 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
           </div>
           <FormField
             control={form.control}
+            name="biodata"
+            render={({ field }) => (
+              <FormItem className="col-span-2">
+                <FormLabel>Biodata</FormLabel>
+                <FormControl>
+                  <Textarea
+                    disabled={isLoading}
+                    placeholder="Shoutout about your self!"
+                    {...field}
+                    value={field.value || ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="description"
             render={({ field }) => (
               <FormItem className="col-span-2">
@@ -210,7 +229,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
                 <FormControl>
                   <Textarea
                     disabled={isLoading}
-                    placeholder="Shoutout about your self!"
+                    placeholder="Description about your self!"
                     {...field}
                     value={field.value || ""}
                   />
