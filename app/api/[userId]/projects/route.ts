@@ -104,7 +104,14 @@ export async function GET(
         },
         include :{
           role: true,
-          skills: true
+          skills: {
+            include: {
+              skill: true
+            }
+          }
+        },
+        orderBy: {
+          workDate: "desc"
         }
       })
 

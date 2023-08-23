@@ -9,7 +9,7 @@ export async function POST(
       const currentUser = await getCurrentUser();
       const body = await req.json();
 
-      const {label, proficiency, imageUrl} = body;
+      const {label, proficiency, imageUrl, roleId} = body;
 
       if (!currentUser) {
         return new NextResponse('Unauthenticated', {status: 401})
@@ -23,11 +23,16 @@ export async function POST(
         return new NextResponse('Proficiency is required', {status: 400})
       }
 
+      if (!roleId) {
+        return new NextResponse('Role is required', {status: 400})
+      }
+
       const skill = await prismadb.skill.create({
         data: {
           label,
           proficiency,
           imageUrl,
+          roleId,
           userId: currentUser.id,
         }
       })
@@ -44,6 +49,9 @@ export async function GET(
   { params } : { params : { userId: string }}
   ) {
     try {
+      const { searchParams } = new URL(req.url);
+      const roleId = searchParams.get("roleId") || undefined;
+      
       const {userId} = params;
 
       if (!userId) {
@@ -52,7 +60,11 @@ export async function GET(
 
       const skills = await prismadb.skill.findMany({
         where: {
-          userId,        
+          userId,
+          roleId
+        },
+        include :{
+          role: true,
         }
       })
 

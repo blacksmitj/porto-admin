@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { useState } from "react";
 import { Trash } from "lucide-react";
-import { Skill } from "@prisma/client";
+import { Role, Skill } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { useParams, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,9 +35,11 @@ import { ImageUpload } from "@/components/ui/image-upload";
 interface SkillFormProps {
   initialData: Skill | null;
   userId: string;
+  roles: Role[];
 }
 
 const formSchema = z.object({
+  roleId: z.string().min(1).nullable(),
   label: z.string().min(1),
   imageUrl: z.string().nullable(),
   proficiency: z.string(),
@@ -50,6 +52,7 @@ export const proficiencies = ["Beginner", "Fluent", "Intermediate"];
 export const SkillForm: React.FC<SkillFormProps> = ({
   initialData,
   userId,
+  roles,
 }) => {
   const params = useParams();
   const router = useRouter();
@@ -66,6 +69,7 @@ export const SkillForm: React.FC<SkillFormProps> = ({
   const form = useForm<SkillFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
+      roleId: undefined,
       label: "",
       proficiency: proficiencies[0],
     },
@@ -201,7 +205,7 @@ export const SkillForm: React.FC<SkillFormProps> = ({
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue
-                            placeholder="Select Role"
+                            placeholder="Select Proficiency"
                             defaultValue={field.value}
                           ></SelectValue>
                         </SelectTrigger>
@@ -211,7 +215,7 @@ export const SkillForm: React.FC<SkillFormProps> = ({
                       <SelectContent>
                         {proficiencies.length === 0 && (
                           <SelectItem disabled value="">
-                            Fill role on Roles Page
+                            Fill proficiency
                           </SelectItem>
                         )}
                         {proficiencies.map((role, index) => (
@@ -226,9 +230,56 @@ export const SkillForm: React.FC<SkillFormProps> = ({
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="roleId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Role</FormLabel>
+                  <Select
+                    disabled={isLoading}
+                    onValueChange={field.onChange}
+                    value={field.value || undefined}
+                    defaultValue={field.value || undefined}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder="Select Role"
+                          defaultValue={field.value || undefined}
+                        ></SelectValue>
+                      </SelectTrigger>
+                    </FormControl>
+                    <FormMessage />
+
+                    <SelectContent>
+                      {roles.length === 0 && (
+                        <SelectItem disabled value="">
+                          Fill role on Roles Page
+                        </SelectItem>
+                      )}
+                      {roles.map((role) => (
+                        <SelectItem key={role.id} value={role.id}>
+                          {role.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
           </div>
           <Button disabled={isLoading} className="ml-auto" type="submit">
             {action}
+          </Button>
+          <Button
+            disabled={isLoading}
+            className="ml-6"
+            type="button"
+            variant={"link"}
+            onClick={router.back}
+          >
+            Back
           </Button>
         </form>
       </Form>

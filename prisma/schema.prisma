@@ -64,6 +64,8 @@ model Work {
   user        User      @relation("UserToWork", fields: [userId], references: [id])
   roleId      String
   role        Role      @relation("RoleToWork", fields: [roleId], references: [id])
+  companyLink String?
+  address     String?
   company     String
   fromDate    DateTime
   toDate      DateTime?
@@ -100,10 +102,11 @@ model Project {
 model Role {
   id         String    @id @default(uuid())
   userId     String
-  isFeatured Boolean   @default(false)
   user       User      @relation("UserToRole", fields: [userId], references: [id])
   works      Work[]    @relation("RoleToWork")
   projects   Project[] @relation("RoleToProject")
+  skills     Skill[]   @relation("RoleToSkill")
+  isFeatured Boolean   @default(false)
   label      String
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
@@ -115,6 +118,8 @@ model Skill {
   id          String           @id @default(uuid())
   userId      String
   user        User             @relation("UserToSkill", fields: [userId], references: [id])
+  roleId      String?
+  role        Role?            @relation("RoleToSkill", fields: [roleId], references: [id])
   label       String
   imageUrl    String?
   proficiency Proficiency      @default(Beginner)
@@ -123,6 +128,7 @@ model Skill {
   projects    SkillToProject[]
 
   @@index([userId])
+  @@index([roleId])
 }
 
 model Education {

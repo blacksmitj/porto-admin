@@ -43,6 +43,8 @@ interface WorkFormProps {
 const formSchema = z.object({
   roleId: z.string().min(1),
   company: z.string().min(1),
+  companyLink: z.string().min(1).nullable(),
+  address: z.string().min(1).nullable(),
   fromDate: z.date(),
   toDate: z.date().nullable(),
   description: z.string().min(1),
@@ -185,6 +187,42 @@ export const WorkForm: React.FC<WorkFormProps> = ({
             />
             <FormField
               control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Company Address</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isLoading}
+                      placeholder="Address of Company"
+                      {...field}
+                      value={field.value || ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="companyLink"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Company Link</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isLoading}
+                      placeholder="Link of company"
+                      {...field}
+                      value={field.value || ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="fromDate"
               render={({ field }) => (
                 <FormItem>
@@ -290,6 +328,15 @@ export const WorkForm: React.FC<WorkFormProps> = ({
           />
           <Button disabled={isLoading} className="ml-auto" type="submit">
             {action}
+          </Button>
+          <Button
+            disabled={isLoading}
+            className="ml-6"
+            type="button"
+            variant={"link"}
+            onClick={router.back}
+          >
+            Back
           </Button>
         </form>
       </Form>

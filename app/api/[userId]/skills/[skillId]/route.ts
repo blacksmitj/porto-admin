@@ -14,6 +14,9 @@ export async function GET(
     const skill = await prismadb.skill.findUnique({
       where: {
         id: params.skillId,
+      },
+      include :{
+        role: true
       }
     });
 
@@ -33,7 +36,7 @@ export async function PATCH(
     const currentUser = await getCurrentUser()
     const body = await req.json();
 
-    const {label, proficiency, imageUrl} = body;
+    const {label, proficiency, imageUrl, roleId} = body;
     const {skillId} = params;
 
     if (!currentUser) {
@@ -52,6 +55,10 @@ export async function PATCH(
       return new NextResponse("Skill id is required", {status: 400})
     }
 
+    if (!roleId) {
+      return new NextResponse('Role is required', {status: 400})
+    }
+
     const skill = await prismadb.skill.updateMany({
       where: {
         id: skillId,
@@ -60,7 +67,8 @@ export async function PATCH(
       data: {
         label,
         proficiency,
-        imageUrl
+        imageUrl,
+        roleId
       }
     });
 

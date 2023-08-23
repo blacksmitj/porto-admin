@@ -45,7 +45,8 @@ export async function PATCH(
       workDate, 
       imageUrl, 
       videoUrl, 
-      description
+      description,
+      linkUrl
     } = body;
 
     const {projectId} = params;
@@ -78,6 +79,10 @@ export async function PATCH(
       return new NextResponse('Image url is required', {status: 400})
     }
 
+    if (!linkUrl) {
+      return new NextResponse('Link url is required', {status: 400})
+    }
+
     if (!description) {
       return new NextResponse('Description date is required', {status: 400})
     }
@@ -94,6 +99,7 @@ export async function PATCH(
           workDate,
           imageUrl,
           videoUrl,
+          linkUrl,
           description,
           userId: currentUser.id,
           skills: {
@@ -108,14 +114,6 @@ export async function PATCH(
         userId: currentUser.id
       },
       data: {
-          label,
-          roleId,
-          company,
-          workDate,
-          imageUrl,
-          videoUrl,
-          description,
-          userId: currentUser.id,
           skills: {
             create: skills.map((skillId: string) => ({
               skill: {

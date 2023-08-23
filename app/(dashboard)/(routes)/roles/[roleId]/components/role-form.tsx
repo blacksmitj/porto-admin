@@ -180,6 +180,15 @@ export const RoleForm: React.FC<RoleFormProps> = ({ initialData, userId }) => {
           <Button disabled={isLoading} className="ml-auto" type="submit">
             {action}
           </Button>
+          <Button
+            disabled={isLoading}
+            className="ml-6"
+            type="button"
+            variant={"link"}
+            onClick={router.back}
+          >
+            Back
+          </Button>
         </form>
       </Form>
     </>

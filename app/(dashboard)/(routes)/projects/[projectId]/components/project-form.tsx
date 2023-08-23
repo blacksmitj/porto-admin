@@ -358,6 +358,15 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
           <Button disabled={isLoading} className="ml-auto" type="submit">
             {action}
           </Button>
+          <Button
+            disabled={isLoading}
+            className="ml-6"
+            type="button"
+            variant={"link"}
+            onClick={router.back}
+          >
+            Back
+          </Button>
         </form>
       </Form>
     </>

@@ -33,7 +33,7 @@ export async function PATCH(
     const currentUser = await getCurrentUser()
     const body = await req.json();
 
-    const {roleId, company, fromDate, toDate, description} = body;
+    const {roleId, company, companyLink, address, fromDate, toDate, description} = body;
     const {workId} = params;
 
     if (!currentUser) {
@@ -64,6 +64,8 @@ export async function PATCH(
       data: {
         roleId,
         company,
+        companyLink,
+        address,
         fromDate,
         toDate,
         description,

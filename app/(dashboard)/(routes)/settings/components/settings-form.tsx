@@ -241,6 +241,15 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
           <Button disabled={isLoading} className="ml-auto" type="submit">
             Save Changes
           </Button>
+          <Button
+            disabled={isLoading}
+            className="ml-6"
+            type="button"
+            variant={"link"}
+            onClick={router.back}
+          >
+            Back
+          </Button>
         </form>
       </Form>
       <Separator />

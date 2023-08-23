@@ -16,9 +16,15 @@ const SkillPage = async ({ params }: { params: { skillId: string } }) => {
     },
   });
 
+  const roles = await prismadb.role.findMany({
+    where: {
+      userId: currentUser.id,
+    },
+  });
+
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
-      <SkillForm initialData={skill} userId={currentUser.id} />
+      <SkillForm initialData={skill} userId={currentUser.id} roles={roles} />
     </div>
   );
 };

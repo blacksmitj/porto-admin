@@ -9,7 +9,8 @@ export async function POST(
       const currentUser = await getCurrentUser();
       const body = await req.json();
 
-      const {roleId, company, fromDate, toDate, description} = body;
+
+      const {roleId, company, companyLink, address, fromDate, toDate, description} = body;
 
       if (!currentUser) {
         return new NextResponse('Unauthenticated', {status: 401})
@@ -34,6 +35,8 @@ export async function POST(
       const work = await prismadb.work.create({
         data: {
           roleId,
+          companyLink,
+          address,
           company,
           fromDate,
           toDate,
@@ -54,7 +57,7 @@ export async function GET(
   { params } : { params : { userId: string }}
   ) {
     try {
-      const {userId} = params;
+      const { userId } = params;
 
       if (!userId) {
         return new NextResponse('User Id is required', {status: 400})
@@ -62,10 +65,13 @@ export async function GET(
 
       const works = await prismadb.work.findMany({
         where: {
-          userId,
+          userId
         },
         include :{
           role: true,
+        },
+        orderBy: {
+          fromDate: "desc"
         }
       })
 
