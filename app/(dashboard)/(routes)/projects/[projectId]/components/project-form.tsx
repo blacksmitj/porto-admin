@@ -51,7 +51,7 @@ const formSchema = z.object({
   description: z.string().min(1),
   imageUrl: z.string().min(1),
   linkUrl: z.string().min(1),
-  videoUrl: z.string().nullable(),
+  githubUrl: z.string().nullable(),
 });
 
 type ProjectFormValues = z.infer<typeof formSchema>;
@@ -90,7 +90,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
       description: "",
       imageUrl: "",
       linkUrl: "",
-      videoUrl: "",
+      githubUrl: "",
     },
   });
 
@@ -282,14 +282,14 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
             />
             <FormField
               control={form.control}
-              name="videoUrl"
+              name="githubUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Embeded Video</FormLabel>
+                  <FormLabel>Github Url</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder="Your project video?"
+                      placeholder="Your project Github Url?"
                       {...field}
                       value={field.value || ""}
                     />
@@ -307,7 +307,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder="Your project video?"
+                      placeholder="Your project link?"
                       {...field}
                       value={field.value || ""}
                     />

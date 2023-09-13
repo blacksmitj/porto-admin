@@ -42,7 +42,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       router.refresh();
       toast({
         title: "Projects deleted",
-        description: "You have deleted Project : " + data.company,
+        description: "You have deleted Project : " + data.label,
       });
     } catch (error: any) {
       console.log(error);

@@ -33,7 +33,7 @@ const ProjectsPage = async () => {
   const formatProjects: ProjectsColumn[] = projects.map((item) => ({
     id: item.id,
     userId: item.userId,
-    company: item.company,
+    label: item.label,
     role: item.role.label,
     skills: item.skills.map((item) => item.skill.label).join(", "),
     workDate: format(item.workDate, "MMM do, yyyy"),

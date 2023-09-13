@@ -89,7 +89,7 @@ model Project {
   description String
   imageUrl    String
   linkUrl     String
-  videoUrl    String?
+  githubUrl   String?
   isFeatured  Boolean          @default(false)
   skills      SkillToProject[]
   createdAt   DateTime         @default(now())
