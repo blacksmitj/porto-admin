@@ -91,6 +91,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
       imageUrl: "",
       linkUrl: "",
       githubUrl: "",
+      githubUrl: "",
     },
   });
 
@@ -283,13 +284,16 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
             <FormField
               control={form.control}
               name="githubUrl"
+              name="githubUrl"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Github Url</FormLabel>
                   <FormLabel>Github Url</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isLoading}
                       placeholder="Your project github?"
+                      placeholder="Your project Github Url?"
                       {...field}
                       value={field.value || ""}
                     />
@@ -308,6 +312,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
                     <Input
                       disabled={isLoading}
                       placeholder="Your project Link?"
+                      placeholder="Your project link?"
                       {...field}
                       value={field.value || ""}
                     />

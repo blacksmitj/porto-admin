@@ -6,7 +6,7 @@ import { CellAction } from "./cell-action";
 export type ProjectsColumn = {
   id: string;
   userId: string;
-  company: string;
+  label: string;
   role: string;
   skills: string;
   workDate: string;
@@ -14,8 +14,8 @@ export type ProjectsColumn = {
 
 export const columns: ColumnDef<ProjectsColumn>[] = [
   {
-    accessorKey: "company",
-    header: "Title",
+    accessorKey: "label",
+    header: "Project Name",
   },
   {
     accessorKey: "role",
