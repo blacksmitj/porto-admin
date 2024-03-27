@@ -64,6 +64,7 @@ const LoginForm = () => {
             description: "Go make magic now!",
           });
           router.push("/");
+          console.log("goo");
         }
       })
       .catch((error) => {
