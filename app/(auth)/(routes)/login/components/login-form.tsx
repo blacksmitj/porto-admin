@@ -57,14 +57,21 @@ const LoginForm = () => {
       redirect: false,
     })
       .then((callback) => {
-        setIsLoading(false);
+        if (callback?.error) {
+          toast({
+            title: "Uh oh!",
+            description: callback.error,
+          });
+          setIsLoading(false);
+          return;
+        }
+
         if (callback?.ok) {
           toast({
             title: "Success Login",
             description: "Go make magic now!",
           });
           router.push("/");
-          console.log("goo");
         }
       })
       .catch((error) => {
@@ -73,8 +80,6 @@ const LoginForm = () => {
           title: "Uh oh!",
           description: error.message,
         });
-      })
-      .finally(() => {
         setIsLoading(false);
       });
   };
